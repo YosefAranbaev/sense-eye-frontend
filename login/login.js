@@ -24,5 +24,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
     });
-
 });
+function forgotPassword() {
+    // Redirect the user to the forgot password page
+    window.location.href = ".forgot_password.html";
+}
+
+function signup() {
+    // Redirect the user to the signup page
+    window.location.href = "../signup/signup.html";
+}
