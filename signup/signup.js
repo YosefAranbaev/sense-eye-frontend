@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     const form = document.getElementById('signup-form');
-
+    const signUpMessageP = document.getElementById('signUpMessageP');
     form.addEventListener('submit', (event) => {
         event.preventDefault(); // Prevents the page from reloading on form submission
 
@@ -16,13 +16,23 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         fetch('http://localhost:8000/api/users/', requestData)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Email already exists");
+                }
+                return response.json();
+            })
             .then(data => {
                 console.log(data);
+                signUpMessageP.style.color = "blue";
+                signUpMessageP.textContent = 'Signup successful!';
+                window.location.href = '../login/main.html';
                 // Do something with the response data
             })
             .catch(error => {
                 console.error(error);
+                signUpMessageP.style.color = "red";
+                signUpMessageP.textContent = error.message
                 // Handle the error
             });
     });
