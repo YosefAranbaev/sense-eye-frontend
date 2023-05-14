@@ -1,4 +1,109 @@
-Imagecounter = 0;
+function openStat(gameID) {
+    console.log(gameID);
+    const url = `game_stat.html?gameID=${gameID}`;
+    window.location.href = url;
+}
+function zoomImage(img) {
+    img.style.transform = "scale(2)"; // increase the image size by 2 times
+    img.style.transition = "transform 0.5s"; // add a smooth transition effect
+    document.addEventListener("wheel", resetImageSize); // add a listener for scrolling
+}
+function resetImageSize() {
+    const images = document.querySelectorAll(".recPic");
+    images.forEach((image) => {
+        image.style.transform = "scale(1)"; // reset the image size to its original size
+        image.removeEventListener("click", resetImageSize); // remove the click listener
+    });
+    document.removeEventListener("wheel", resetImageSize); // remove the scroll listener
+}
+document.addEventListener("DOMContentLoaded", function () {
+    let gameID = ''
+    if (window.location.pathname.includes("trainer_results.html")) {
+
+        const wrapper = document.querySelector(".wrapper_body");
+        const url = "https://sense-eye-backend.onrender.com/api/games";
+        console.log(url);
+        console.log(localStorage.getItem("user_org_name"))
+
+        fetch(url)
+            .then((response) => response.json())
+            .then((data) => {
+                data.forEach((game) => {
+                    console.log(game)
+                    console.log(localStorage.getItem("user_org_name"))
+
+                    if (game.orgName == localStorage.getItem("user_org_name")) {
+                        console.log(localStorage.getItem("user_org_name"))
+                        const gameElement = document.createElement("div");
+                        gameElement.classList.add("game");
+                        gameElement.innerHTML = `
+            <a><h2>Organization Number: ${game.mode}</h2>
+            <p>Organization Name: ${game.orgName}</p>
+            <p>Date: ${game.timestamp}</p></a>
+          `;
+                        gameElement.addEventListener("click", function () {
+                            console.log("aaa")
+                            gameID = game.timestamp;
+                            openStat(game.timestamp);
+
+                        });
+                        wrapper.appendChild(gameElement);
+                    }
+                });
+            })
+            .catch((error) => console.log(error));
+    }
+    if (window.location.pathname.includes("game_stat.html")) {
+        const wrapper = document.querySelector(".wrapper_body");
+        const url = `https://sense-eye-backend.onrender.com/api/statistics/${gameID}`;
+        console.log(url);
+        fetch(url)
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else if (response.status === 404) {
+                    const noResElement = document.createElement("div");
+                    noResElement.innerText = "No recommendations found";
+                    wrapper.appendChild(noResElement);
+                    throw new Error("No recommendations found");
+                } else {
+                    throw new Error(`Request failed with status ${response.status}`);
+                }
+            })
+            .then((data) => {
+                appendedRecCounter = 0
+                console.log(data)
+                data.forEach((game) => {
+                    console.log('---->' + game)
+                        console.log('++++++>' + gameID)
+                        const recElement = document.createElement("div");
+                        recElement.classList.add("game");
+                        recElement.innerHTML = `
+                                <a><h2>Organization: ${game.orgName}</h2>
+                                <p>game ID: ${game.gameID}</p></a>
+                                <div><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div>
+                            `;
+                        
+                        recElement.addEventListener("click", function () {
+                            const imageElements = document.querySelectorAll(`[id^="myImage-${game.gameID}"]`);
+                            imageElements.forEach((imageElement) => {
+                                imageElement.addEventListener("click", function () {
+                                    zoomImage(this);
+                                });
+                            });
+                        });
+                        wrapper.appendChild(recElement);
+                        appendedRecCounter++;
+                });
+                if (appendedRecCounter == 0) {
+                    const noResElement = document.createElement("div");
+                    noResElement.innerText = "No recommendations found";
+                    wrapper.appendChild(noResElement);
+                }
+            })
+            .catch((error) => console.log(error));
+    }
+});
 document.addEventListener("DOMContentLoaded", function () {
     let gameID = ''
     if (window.location.pathname.includes("trainer_my_list.html")) {
@@ -43,19 +148,6 @@ function openModal(gameID) {
     window.location.href = url;
 }
 document.addEventListener("DOMContentLoaded", function () {
-    function zoomImage(img) {
-        img.style.transform = "scale(2)"; // increase the image size by 2 times
-        img.style.transition = "transform 0.5s"; // add a smooth transition effect
-        document.addEventListener("wheel", resetImageSize); // add a listener for scrolling
-    }
-    function resetImageSize() {
-        const images = document.querySelectorAll(".recPic");
-        images.forEach((image) => {
-            image.style.transform = "scale(1)"; // reset the image size to its original size
-            image.removeEventListener("click", resetImageSize); // remove the click listener
-        });
-        document.removeEventListener("wheel", resetImageSize); // remove the scroll listener
-    }
 
     const wrapper = document.querySelector(".wrapper_body");
     const urlParams = new URLSearchParams(window.location.search);
