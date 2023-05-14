@@ -47,30 +47,26 @@ a {
     margin-top: -10px;
 }
 
-.top-side #logo {
-    position: absolute;
+#logo {
+    position: relative;
     width: 200px;
     height: 100px;
     margin-left: -20px;
-    margin-top: -10px;
-}
+    margin-top: -20px;
+  }
 
 #user {
-    float: left;
-    margin-left: 1470px;
-    margin-top: 30px;
-    width: 900px;
-    height: 900px;
-}
-
-#user i {
     float: right;
+    margin-top: 1%;
+    margin-right: 50px;
     font-size: 2em;
+    /* adjust the size as needed */
     color: black;
-    width: 900px;
-    height: 900px;
+    /* change the color to black or any other color you prefer */
     text-decoration: none;
-}
+    /* remove the underline */
+  
+  }
 
 /* nav bar */
 .navbar {
@@ -190,12 +186,14 @@ p {
     margin-top: 90px;
 }
 
-/* Red */
 @media screen and (max-width: 767px) {
-    #user {
-        padding-top: 10px;
-        margin-left: -8px;
-    }
+     #user {
+      margin-right: 15px;
+      margin-top: 20px;
+      font-size: 150%;
+      /* adjust the size as needed */
+     }
+
 
     .breadcrumbs {
         display: none;
@@ -205,22 +203,6 @@ p {
         margin-top: 10px;
     }
 
-    #user {
-        margin-top: 20px;
-        text-align: center;
-    }
-
-    #user i {
-        font-size: 150%;
-        display: block;
-        margin: 0 auto;
-    }
-
-    /* #user {
-        margin-right: 15px;
-        margin-top: 20px;
-        font-size: 150%;
-    } */
 
     .navbar {
         display: flex;
@@ -243,23 +225,5 @@ p {
         align-items: center;
         flex-basis: 12%;
         text-align: center;
-    }
-}
-
-@media screen and (min-width: 768px) and (max-width: 991px) {
-    #user {
-        margin-left: 10px;
-        margin-top: 60px;
-        width: 400px;
-        height: 400px;
-    }
-}
-
-@media screen and (min-width: 992px) {
-    #user {
-        margin-left: 1470px;
-        margin-top: 30px;
-        width: 900px;
-        height: 900px;
     }
 }
