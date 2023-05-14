@@ -1,4 +1,46 @@
-Imagecounter = 0;
+function openStat(gameID) {
+    console.log(gameID);
+    const url = `game_stat.html?gameID=${gameID}`;
+    window.location.href = url;
+}
+document.addEventListener("DOMContentLoaded", function () {
+    let gameID = ''
+    if (window.location.pathname.includes("trainer_results.html")) {
+
+        const wrapper = document.querySelector(".wrapper_body");
+        const url = "https://sense-eye-backend.onrender.com/api/games";
+        console.log(url);
+        console.log(localStorage.getItem("user_org_name"))
+
+        fetch(url)
+            .then((response) => response.json())
+            .then((data) => {
+                data.forEach((game) => {
+                    console.log(game)
+                    console.log(localStorage.getItem("user_org_name"))
+
+                    if (game.orgName == localStorage.getItem("user_org_name")) {
+                        console.log(localStorage.getItem("user_org_name"))
+                        const gameElement = document.createElement("div");
+                        gameElement.classList.add("game");
+                        gameElement.innerHTML = `
+            <a><h2>Organization Number: ${game.mode}</h2>
+            <p>Organization Name: ${game.orgName}</p>
+            <p>Date: ${game.timestamp}</p></a>
+          `;
+                        gameElement.addEventListener("click", function () {
+                            console.log("aaa")
+                            gameID = game.timestamp;
+                            openStat(game.timestamp);
+
+                        });
+                        wrapper.appendChild(gameElement);
+                    }
+                });
+            })
+            .catch((error) => console.log(error));
+    }
+});
 document.addEventListener("DOMContentLoaded", function () {
     let gameID = ''
     if (window.location.pathname.includes("trainer_my_list.html")) {
@@ -6,24 +48,32 @@ document.addEventListener("DOMContentLoaded", function () {
         const wrapper = document.querySelector(".wrapper_body");
         const url = "https://sense-eye-backend.onrender.com/api/games";
         console.log(url);
+        console.log(localStorage.getItem("user_org_name"))
+
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
                 data.forEach((game) => {
-                    const gameElement = document.createElement("div");
-                    gameElement.classList.add("game");
-                    gameElement.innerHTML = `
+                    console.log(game)
+                    console.log(localStorage.getItem("user_org_name"))
+
+                    if (game.orgName == localStorage.getItem("user_org_name")) {
+                        console.log(localStorage.getItem("user_org_name"))
+                        const gameElement = document.createElement("div");
+                        gameElement.classList.add("game");
+                        gameElement.innerHTML = `
             <a><h2>Organization Number: ${game.mode}</h2>
             <p>Organization Name: ${game.orgName}</p>
             <p>Date: ${game.timestamp}</p></a>
           `;
-                    gameElement.addEventListener("click", function () {
-                        console.log("aaa")
-                        gameID = game.timestamp;
-                        openModal(game.timestamp);
+                        gameElement.addEventListener("click", function () {
+                            console.log("aaa")
+                            gameID = game.timestamp;
+                            openModal(game.timestamp);
 
-                    });
-                    wrapper.appendChild(gameElement);
+                        });
+                        wrapper.appendChild(gameElement);
+                    }
                 });
             })
             .catch((error) => console.log(error));
@@ -53,80 +103,82 @@ document.addEventListener("DOMContentLoaded", function () {
     const urlParams = new URLSearchParams(window.location.search);
     const gameID = urlParams.get('gameID');
     var appendedRecCounter = 0
-    if (window.location.pathname.includes("trainer_results.html")) {
-        const BASE_URL = 'http://localhost:8000/api/rec';
+    if (window.location.pathname.includes("main.html")) {
+        const BASE_URL = 'https://sense-eye-backend.onrender.com/api/rec';
         const PAGE_SIZE = 100;
         let successRecStatus = 0
         let wrongRecStatus = 0
-        
+
         var ctx = document.getElementById('myChart').getContext('2d');
-        
+
         function fetchAllRecs(page) {
             fetch(`${BASE_URL}?page=${page}&page_size=${PAGE_SIZE}`)
-              .then(response => response.json())
-              .then(data => {
-                console.log(data);
-                console.log(data.results)
-                data.forEach(rec => { // Changed this line to use data.results instead of data
-                  if (rec.status === 1) {
-                    successRecStatus++
-                    console.log(`Rec ${rec.id} is in green`);
-                  } else if (rec.status === -1) {
-                    wrongRecStatus++
-                    console.log(`Rec ${rec.id} is in red`);
-                  }
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    console.log(data.results)
+                    data.forEach(rec => { // Changed this line to use data.results instead of data
+                        if (rec.orgName == localStorage.getItem("user_org_name")) {
+                            if (rec.status === 1) {
+                                successRecStatus++
+                                console.log(`Rec ${rec.id} is in green`);
+                            } else if (rec.status === -1) {
+                                wrongRecStatus++
+                                console.log(`Rec ${rec.id} is in red`);
+                            }
+                        }
+                    });
+                    console.log(data)
+                    if (data.next) {
+                        // There are more pages, recursively fetch the next page
+                        fetchAllRecs(page + 1);
+                    } else {
+                        // All data has been fetched, create the chart
+                        createChart();
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
                 });
-                console.log(data)
-                if (data.next) {
-                  // There are more pages, recursively fetch the next page
-                  fetchAllRecs(page + 1);
-                } else {
-                  // All data has been fetched, create the chart
-                  createChart();
-                }
-              })
-              .catch(error => {
-                console.error(error);
-              });
-          }
-          
-        
-        function createChart() {
-          var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-              labels: [`WRONG ${Math.round((wrongRecStatus/(wrongRecStatus + successRecStatus))*100)}%`, `GOOD ${Math.round(100 - (wrongRecStatus/(wrongRecStatus + successRecStatus))*100)}%`],
-              datasets: [{
-                label: 'Marking Number',
-                data: [wrongRecStatus/PAGE_SIZE*100, successRecStatus/PAGE_SIZE*100],
-                backgroundColor: [
-                  'rgba(255, 99, 132, 0.8)',
-                  'rgba(75, 192, 192, 0.8)'
-                ],
-                borderColor: [
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(75, 192, 192, 1)'
-                ],
-                borderWidth: 1,
-              }]
-            },
-            options: {
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  stepSize: 1,
-                  display: false
-
-
-                }
-              }
-            }
-          });
         }
-        
+
+
+        function createChart() {
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [`WRONG ${Math.round((wrongRecStatus / (wrongRecStatus + successRecStatus)) * 100)}%`, `GOOD ${Math.round(100 - (wrongRecStatus / (wrongRecStatus + successRecStatus)) * 100)}%`],
+                    datasets: [{
+                        label: 'Marking Number',
+                        data: [wrongRecStatus / PAGE_SIZE * 100, successRecStatus / PAGE_SIZE * 100],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.8)',
+                            'rgba(75, 192, 192, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(75, 192, 192, 1)'
+                        ],
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            stepSize: 1,
+                            display: false
+
+
+                        }
+                    }
+                }
+            });
+        }
+
         // Start fetching from page 1
         fetchAllRecs(1);
-        
+
     }
     if (window.location.pathname.includes("game_rec.html")) {
         const wrapper = document.querySelector(".wrapper_body");
@@ -159,19 +211,17 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <p>game ID: ${game.gameID}</p></a>
                                 <button class="buttonGreen" id=${game._id}>Good</button>
                                 <button class="buttonRed" id=${game._id}>Bad</button>
-                                <div><img class="recPic" id="myImage-${game.gameID}"></div>
+                                <div><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div>
                             `;
-                        var img = new Image();
-                        img.src = 'data:image/jpeg;base64,' + game.frame;
-                        img.onload = function () {
+                        
+                        recElement.addEventListener("click", function () {
                             const imageElements = document.querySelectorAll(`[id^="myImage-${game.gameID}"]`);
                             imageElements.forEach((imageElement) => {
-                                imageElement.src = img.src;
                                 imageElement.addEventListener("click", function () {
                                     zoomImage(this);
                                 });
                             });
-                        };
+                        });
                         wrapper.appendChild(recElement);
                         appendedRecCounter++;
                     }

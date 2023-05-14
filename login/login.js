@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 window.location.href = '../mentor/main.html';
             }
             if (data.role == "trainee") {
-                window.location.href = '../player/main.html';
+                window.location.href = '../player_interface/main.html';
             }
             return data
         }).catch(error => {
