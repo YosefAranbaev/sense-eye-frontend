@@ -107,14 +107,16 @@ document.addEventListener("DOMContentLoaded", function () {
                   'rgba(255, 99, 132, 1)',
                   'rgba(75, 192, 192, 1)'
                 ],
-                borderWidth: 1
+                borderWidth: 1,
               }]
             },
             options: {
               scales: {
                 y: {
                   beginAtZero: true,
-                  stepSize: 1
+                  stepSize: 1,
+                  display: false
+
 
                 }
               }
