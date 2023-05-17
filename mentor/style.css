@@ -185,7 +185,18 @@ p {
 .wrapper_body {
     margin-top: 90px;
 }
-
+#orgNameList{
+    margin-left: 20%;
+}
+#orgNameResult{
+    margin-left: 20%;
+}
+#gameRecTitle{
+    margin-left: 30%;
+}
+#gameDateRecTitle{
+    margin-left: 15%;
+}
 @media screen and (max-width: 767px) {
      #user {
       margin-right: 15px;

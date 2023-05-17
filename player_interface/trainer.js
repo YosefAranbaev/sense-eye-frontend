@@ -29,6 +29,13 @@ document.addEventListener("DOMContentLoaded", function () {
             .then((response) => response.json())
             .then((data) => {
                 data.forEach((game) => {
+                    const jojoElement = document.getElementById("orgNameResult");
+
+                    if (jojoElement) {
+                        // If the element exists, set its text content to a new value
+                        jojoElement.textContent =game.orgName;
+
+                    }
                     console.log(game)
                     console.log(localStorage.getItem("user_org_name"))
 
@@ -37,8 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         const gameElement = document.createElement("div");
                         gameElement.classList.add("game");
                         gameElement.innerHTML = `
-            <a><h2>Organization Number: ${game.mode}</h2>
-            <p>Organization Name: ${game.orgName}</p>
+            <a><h2>Game Mode: ${game.mode}</h2>
             <p>Date: ${game.timestamp}</p></a>
           `;
                         gameElement.addEventListener("click", function () {
@@ -75,13 +81,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log(data)
                 data.forEach((game) => {
                     console.log('---->' + game)
+                    const jojoElement = document.getElementById("gameRecTitle");
+                    const dateTitle = document.getElementById("gameDateRecTitle")
+                    if (jojoElement&&dateTitle) {
+                        // If the element exists, set its text content to a new value
+                        jojoElement.textContent =game.orgName;
+                        dateTitle.textContent = game.gameID;
+                    }
                         console.log('++++++>' + gameID)
                         const recElement = document.createElement("div");
                         recElement.classList.add("game");
                         recElement.innerHTML = `
-                                <a><h2>Organization: ${game.orgName}</h2>
-                                <p>game ID: ${game.gameID}</p></a>
-                                <div><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div>
+                                <a>
+                                <div><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div></a>
                             `;
                         
                         recElement.addEventListener("click", function () {
@@ -117,6 +129,13 @@ document.addEventListener("DOMContentLoaded", function () {
             .then((response) => response.json())
             .then((data) => {
                 data.forEach((game) => {
+                    const jojoElement = document.getElementById("orgNameList");
+
+                    if (jojoElement) {
+                        // If the element exists, set its text content to a new value
+                        jojoElement.textContent =game.orgName;
+
+                    }
                     console.log(game)
                     console.log(localStorage.getItem("user_org_name"))
 
@@ -125,8 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         const gameElement = document.createElement("div");
                         gameElement.classList.add("game");
                         gameElement.innerHTML = `
-            <a><h2>Organization Number: ${game.mode}</h2>
-            <p>Organization Name: ${game.orgName}</p>
+            <a><h2>Game Mode: ${game.mode}</h2>
             <p>Date: ${game.timestamp}</p></a>
           `;
                         gameElement.addEventListener("click", function () {
@@ -251,13 +269,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 appendedRecCounter = 0
                 console.log(data)
                 data.forEach((game) => {
+                    const jojoElement = document.getElementById("gameRecTitle");
+                    const dateTitle = document.getElementById("gameDateRecTitle")
+                    if (jojoElement&&dateTitle) {
+                        // If the element exists, set its text content to a new value
+                        jojoElement.textContent =game.orgName;
+                        dateTitle.textContent = game.gameID;
+                    }
                     console.log('---->' + game)
                         console.log('++++++>' + gameID)
                         const recElement = document.createElement("div");
                         recElement.classList.add("game");
                         recElement.innerHTML = `
-                                <a><h2>Organization: ${game.orgName}</h2>
-                                <p>game ID: ${game.gameID}</p></a>
+                                <a>
                                 <div><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div>
                             `;
                             recElement.addEventListener("click", function () {

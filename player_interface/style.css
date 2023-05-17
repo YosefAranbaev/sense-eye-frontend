@@ -3,7 +3,12 @@ body {
     font-family: Helvetica, sans-serif;
     background-color: #f4f4f4;
 }
-
+#gameRecTitle{
+    margin-left: 30%;
+}
+#gameDateRecTitle{
+    margin-left: 15%;
+}
 a:focus,
 a:active {
     outline: none;
@@ -12,7 +17,12 @@ a:active {
 a {
     color: inherit;
 }
-
+#orgNameList{
+    margin-left: 20%;
+}
+#orgNameResult{
+    margin-left: 20%;
+}
 
 .top-side,
 .header,
