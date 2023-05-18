@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         recElement.classList.add("game");
                         recElement.innerHTML = `
                                 <a>
-                                <div><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div></a>
+                                <div class="frame"><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div></a>
                             `;
                         
                         recElement.addEventListener("click", function () {
@@ -282,7 +282,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         recElement.classList.add("game");
                         recElement.innerHTML = `
                                 <a>
-                                <div><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div>
+                                <div class="frame"><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div>
                             `;
                             recElement.addEventListener("click", function () {
                                 const imageElements = document.querySelectorAll(`[id^="myImage-${game.gameID}"]`);

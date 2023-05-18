@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     recElement.innerHTML = `
                                 <a><h2>Organization: ${game.orgName}</h2>
                                 <p>game ID: ${game.gameID}</p></a>
-                                <div><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div>
+                                <div class="frame"><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div>
                             `;
 
                     recElement.addEventListener("click", function () {
@@ -277,7 +277,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <a>
                                 <button class="buttonGreen" id=${game._id}>Good</button>
                                 <button class="buttonRed" id=${game._id}>Bad</button>
-                                <div><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div>
+                                <div class="frame"><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div>
                             `;
 
                         recElement.addEventListener("click", function () {

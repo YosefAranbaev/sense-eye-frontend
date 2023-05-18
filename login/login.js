@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // You can use the email and password here to send to the server
         // using fetch or another method to authenticate the user
         // For example:
-        fetch('http://localhost:8000/api/users/login', {
+        fetch('https://sense-eye-backend.onrender.com/api/users/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

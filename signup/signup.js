@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         };
 
-        fetch('http://localhost:8000/api/users/', requestData)
+        fetch('https://sense-eye-backend.onrender.com/api/users/', requestData)
             .then(response => {
                 if (!response.ok) {
                     throw new Error("Email already exists");
