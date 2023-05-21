@@ -167,16 +167,35 @@ p {
 }
 
 #orgNameList{
-    margin-left: 20%;
+    margin-left: 32%;
 }
 #orgNameResult{
-    margin-left: 20%;
+    margin-left: 32%;
 }
 #gameRecTitle{
-    margin-left: 30%;
+    margin-left: 33%;
 }
 #gameDateRecTitle{
-    margin-left: 15%;
+    margin-left: 22%;
+}
+#gameCorellIcon{
+    position: relative;
+    height: 40px;
+    width: 40px;
+    margin-left: 28%;
+    margin-top: 5%;
+
+}
+#gameTitle{
+    text-align: center;
+
+}
+#gameListIcon{
+    position: relative;
+    height: 40px;
+    width: 40px;
+    margin-left: 28%;
+    margin-top: 5%;
 }
 @media screen and (max-width: 767px) {
      #user {

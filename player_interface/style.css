@@ -167,16 +167,16 @@ p {
 }
 
 #orgNameList{
-    margin-left: 20%;
+    margin-left: 32%;
 }
 #orgNameResult{
-    margin-left: 20%;
+    margin-left: 32%;
 }
 #gameRecTitle{
-    margin-left: 30%;
+    margin-left: 33%;
 }
 #gameDateRecTitle{
-    margin-left: 15%;
+    margin-left: 22%;
 }
 @media screen and (max-width: 767px) {
      #user {
