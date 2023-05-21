@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
                           <img id=gameCorellIcon src="/pictures/correlation.png" alt="Go to Page 1" />
                         </a>
                         <a href="game_rec.html?gameID=${game.timestamp}">
-                          <img id=gameListIcon src="/pictures/rec_list.png" alt="Go to Page 2" />
+                          <img id=gameListIcon src="/pictures/vorx.png" alt="Go to Page 2" />
                         </a>
                       </div>
             `;
@@ -390,9 +390,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         const recElement = document.createElement("div");
                         recElement.classList.add("game");
                         recElement.innerHTML = `
-                                <a>
-                                <button class="buttonGreen" id=${game._id}>Good</button>
-                                <button class="buttonRed" id=${game._id}>Bad</button>
+                                <img class="buttonGreen" id=${game._id} src="/pictures/V.png">
+                                <img class="buttonRed" id=${game._id} src="/pictures/X.png">
                                 <div class="frame"><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div>
                             `;
 

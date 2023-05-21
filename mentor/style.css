@@ -156,14 +156,16 @@ p {
 .buttonGreen {
     background-color: #4CAF50;
     height: 30px;
-    width: 45px;
+    width: 35px;
+    margin-left: 33%;
 
 }
 
 .buttonRed {
     background-color: #f44336;
     height: 30px;
-    width: 45px;
+    width: 35px;
+    margin-left: 13%;
 }
 
 #orgNameList{
@@ -191,11 +193,11 @@ p {
 
 }
 #gameListIcon{
-    position: relative;
-    height: 40px;
-    width: 40px;
-    margin-left: 28%;
-    margin-top: 5%;
+    position: absolute;
+    height: 80px;
+    width: 80px;
+    margin-left: 22%;
+    margin-top: 2px;
 }
 @media screen and (max-width: 767px) {
      #user {
