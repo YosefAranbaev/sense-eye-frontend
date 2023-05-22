@@ -16,10 +16,42 @@ function resetImageSize() {
     });
     document.removeEventListener("wheel", resetImageSize); // remove the scroll listener
 }
+function convertDateString(dateString) {
+    // Split the date and time components
+    const [datePart, timePart] = dateString.split('_');
+    
+    // Split the date into year, month, and day
+    const [year, month, day] = datePart.split('-');
+    
+    // Split the time into hours, minutes, and seconds
+    const [hours, minutes, seconds] = timePart.split('-');
+    
+    // Create a new Date object with the extracted components
+    const date = new Date(year, month - 1, day, hours, minutes, seconds);
+    
+    // Format the date and time as desired
+    const formattedDate = date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    
+    const formattedTime = date.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric'
+    });
+    
+    return `${formattedDate} ${formattedTime}`;
+  }
+  
+  
 document.addEventListener("DOMContentLoaded", function () {
     let gameID = ''
     if (window.location.pathname.includes("trainer_results.html")) {
-
+        if(!localStorage.getItem("user_org_name")){
+            window.location.href = `../login/main.html`;
+        }
         const wrapper = document.querySelector(".wrapper_body");
         const url = "https://sense-eye-backend.onrender.com/api/games";
         console.log(url);
@@ -55,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                         gameElement.innerHTML = `
             <a><h2>Game Mode: ${game_mode}</h2>
-            <p>Date: ${game.timestamp}</p></a>
+            <p>Date: ${convertDateString(game.timestamp)}</p></a>
           `;
                         gameElement.addEventListener("click", function () {
                             console.log("aaa")
@@ -70,6 +102,9 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch((error) => console.log(error));
     }
     if (window.location.pathname.includes("game_stat.html")) {
+        if(!localStorage.getItem("user_org_name")){
+            window.location.href = `../login/main.html`;
+        }
         const wrapper = document.querySelector(".wrapper_body");
         const url = `https://sense-eye-backend.onrender.com/api/statistics/${gameID}`;
         console.log(url);
@@ -95,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (jojoElement && dateTitle) {
                         // If the element exists, set its text content to a new value
                         jojoElement.textContent = game.orgName;
-                        dateTitle.textContent = game.gameID;
+                        dateTitle.textContent = convertDateString(game.gameID);
                     }
                     console.log('---->' + game)
                     console.log('++++++>' + gameID)
@@ -128,7 +163,9 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     let gameID = ''
     if (window.location.pathname.includes("trainer_my_list.html")) {
-
+        if(!localStorage.getItem("user_org_name")){
+            window.location.href = `../login/main.html`;
+        }
         const wrapper = document.querySelector(".wrapper_body");
         const url = "https://sense-eye-backend.onrender.com/api/games";
         console.log(url);
@@ -164,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         gameElement.innerHTML = `
                         <a>
                         <h2 id = "gameTitle">Game Mode: ${game_mode}</h2>
-                        <p  id = "gameTitle">Date: ${game.timestamp}</p>
+                        <p  id = "gameTitle">${convertDateString(game.timestamp)}</p>
                       </a>
                       <div class="buttons">
                         <a href="game_stat.html?gameID=${game.timestamp}">
@@ -191,12 +228,12 @@ document.addEventListener("DOMContentLoaded", function () {
 function goToPage1(gameID) {
     // Redirect to page1.html with the gameID parameter
     window.location.href = `game_rec.html?gameID=${gameID}`;
-  }
-  
-  function goToPage2(gameID) {
+}
+
+function goToPage2(gameID) {
     // Redirect to page2.html with the gameID parameter
     window.location.href = `game_stat.html?gameID=${gameID}`;
-  }
+}
 function openModal(gameID) {
     console.log(gameID);
     const url = `game_rec.html?gameID=${gameID}`;
@@ -209,6 +246,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const gameID = urlParams.get('gameID');
     var appendedRecCounter = 0
     if (window.location.pathname.includes("main.html")) {
+        console.log(localStorage.getItem("user_org_name"))
+        if(!localStorage.getItem("user_org_name")){
+            window.location.href = `../login/main.html`;
+        }
         const BASE_URL = 'https://sense-eye-backend.onrender.com/api/rec';
         const PAGE_SIZE = 100;
         let successRecStatus = 0
@@ -357,6 +398,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
     if (window.location.pathname.includes("game_rec.html")) {
+        if(!localStorage.getItem("user_org_name")){
+            window.location.href = `../login/main.html`;
+        }
         const wrapper = document.querySelector(".wrapper_body");
         const url = `https://sense-eye-backend.onrender.com/api/rec/${gameID}`;
         console.log(url);
@@ -366,6 +410,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     return response.json();
                 } else if (response.status === 404) {
                     const noResElement = document.createElement("div");
+                    noResElement.className = "noRecommendations";
                     noResElement.innerText = "No recommendations found";
                     wrapper.appendChild(noResElement);
                     throw new Error("No recommendations found");
@@ -382,7 +427,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (jojoElement && dateTitle) {
                         // If the element exists, set its text content to a new value
                         jojoElement.textContent = game.orgName;
-                        dateTitle.textContent = game.gameID;
+                        dateTitle.textContent = convertDateString(game.gameID);
                     }
                     console.log('---->' + game)
                     if (game.status == 0) {
@@ -390,9 +435,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         const recElement = document.createElement("div");
                         recElement.classList.add("game");
                         recElement.innerHTML = `
+                        <div class="frame"><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div>
                                 <img class="buttonGreen" id=${game._id} src="/pictures/V.png">
                                 <img class="buttonRed" id=${game._id} src="/pictures/X.png">
-                                <div class="frame"><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div>
                             `;
 
                         recElement.addEventListener("click", function () {
@@ -409,6 +454,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
                 if (appendedRecCounter == 0) {
                     const noResElement = document.createElement("div");
+                    noResElement.className = "noRecommendations";
                     noResElement.innerText = "No recommendations found";
                     wrapper.appendChild(noResElement);
                 }

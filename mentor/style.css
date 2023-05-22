@@ -166,19 +166,27 @@ p {
     height: 30px;
     width: 35px;
     margin-left: 13%;
+    margin-top: 10px;
 }
 
 #orgNameList{
-    margin-left: 32%;
+    /* margin-left: 32%; */
+    text-align: center;
+
 }
 #orgNameResult{
-    margin-left: 32%;
+    /* margin-left: 32%; */
+    text-align: center;
+
 }
 #gameRecTitle{
-    margin-left: 33%;
+    text-align: center;
+
 }
 #gameDateRecTitle{
-    margin-left: 22%;
+    /* margin-left: 22%; */
+    text-align: center;
+
 }
 #gameCorellIcon{
     position: relative;
@@ -188,7 +196,7 @@ p {
     margin-top: 5%;
 
 }
-#gameTitle{
+#gameTitle, .noRecommendations{
     text-align: center;
 
 }

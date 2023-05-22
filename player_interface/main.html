@@ -27,13 +27,22 @@
         <div class="navbar">
             <div><a href="#work" class="active">Home page</a></div>
             <div><a href="./trainer_my_list.html">Game List</a></div>
-            <div><a href="./trainer_results.html">Results</a></div>
         </div>
-        <div class = "breadcrumbs"><a href="./trainer_my_list.html"><b>Home Page</b></a></div>
+        <div class="breadcrumbs"><a href="./trainer_my_list.html"><b>Home Page</b></a></div>
     </div>
 
     <div class="wrapper">
         <div class="wrapper_body">
+            <div class="filter-section">
+                <label for="start-date">Start Date:</label>
+                <input type="date" id="start-date">
+
+                <label for="end-date">End Date:</label>
+                <input type="date" id="end-date">
+
+                <button id="apply-filter">Apply Filter</button>
+            </div>
+
             <canvas id="myChart" width="600" height="300"></canvas>
         </div>
     </div>

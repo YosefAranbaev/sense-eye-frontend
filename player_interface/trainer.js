@@ -16,10 +16,42 @@ function resetImageSize() {
     });
     document.removeEventListener("wheel", resetImageSize); // remove the scroll listener
 }
+function convertDateString(dateString) {
+    // Split the date and time components
+    const [datePart, timePart] = dateString.split('_');
+
+    // Split the date into year, month, and day
+    const [year, month, day] = datePart.split('-');
+
+    // Split the time into hours, minutes, and seconds
+    const [hours, minutes, seconds] = timePart.split('-');
+
+    // Create a new Date object with the extracted components
+    const date = new Date(year, month - 1, day, hours, minutes, seconds);
+
+    // Format the date and time as desired
+    const formattedDate = date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+
+    const formattedTime = date.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+    });
+
+    return `${formattedDate} ${formattedTime}`;
+}
+
+
 document.addEventListener("DOMContentLoaded", function () {
     let gameID = ''
     if (window.location.pathname.includes("trainer_results.html")) {
-
+        if (!localStorage.getItem("user_org_name")) {
+            window.location.href = `../login/main.html`;
+        }
         const wrapper = document.querySelector(".wrapper_body");
         const url = "https://sense-eye-backend.onrender.com/api/games";
         console.log(url);
@@ -33,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     if (jojoElement) {
                         // If the element exists, set its text content to a new value
-                        jojoElement.textContent =game.orgName;
+                        jojoElement.textContent = game.orgName;
 
                     }
                     console.log(game)
@@ -43,9 +75,19 @@ document.addEventListener("DOMContentLoaded", function () {
                         console.log(localStorage.getItem("user_org_name"))
                         const gameElement = document.createElement("div");
                         gameElement.classList.add("game");
+                        let game_mode = ""
+                        if (game.mode == 1) {
+                            game_mode = "Single Player"
+                        }
+                        if (game.mode == 2) {
+                            game_mode = "Same Team"
+                        }
+                        if (game.mode == 3) {
+                            game_mode = "Different Team"
+                        }
                         gameElement.innerHTML = `
-            <a><h2>Game Mode: ${game.mode}</h2>
-            <p>Date: ${game.timestamp}</p></a>
+            <a><h2>Game Mode: ${game_mode}</h2>
+            <p>Date: ${convertDateString(game.timestamp)}</p></a>
           `;
                         gameElement.addEventListener("click", function () {
                             console.log("aaa")
@@ -60,6 +102,9 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch((error) => console.log(error));
     }
     if (window.location.pathname.includes("game_stat.html")) {
+        if (!localStorage.getItem("user_org_name")) {
+            window.location.href = `../login/main.html`;
+        }
         const wrapper = document.querySelector(".wrapper_body");
         const url = `https://sense-eye-backend.onrender.com/api/statistics/${gameID}`;
         console.log(url);
@@ -80,32 +125,31 @@ document.addEventListener("DOMContentLoaded", function () {
                 appendedRecCounter = 0
                 console.log(data)
                 data.forEach((game) => {
-                    console.log('---->' + game)
                     const jojoElement = document.getElementById("gameRecTitle");
                     const dateTitle = document.getElementById("gameDateRecTitle")
-                    if (jojoElement&&dateTitle) {
+                    if (jojoElement && dateTitle) {
                         // If the element exists, set its text content to a new value
-                        jojoElement.textContent =game.orgName;
-                        dateTitle.textContent = game.gameID;
+                        jojoElement.textContent = game.orgName;
+                        dateTitle.textContent = convertDateString(game.gameID);
                     }
-                        console.log('++++++>' + gameID)
-                        const recElement = document.createElement("div");
-                        recElement.classList.add("game");
-                        recElement.innerHTML = `
-                                <a>
-                                <div class="frame"><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div></a>
+                    console.log('---->' + game)
+                    console.log('++++++>' + gameID)
+                    const recElement = document.createElement("div");
+                    recElement.classList.add("game");
+                    recElement.innerHTML = `
+                                <div class="frame"><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div>
                             `;
-                        
-                        recElement.addEventListener("click", function () {
-                            const imageElements = document.querySelectorAll(`[id^="myImage-${game.gameID}"]`);
-                            imageElements.forEach((imageElement) => {
-                                imageElement.addEventListener("click", function () {
-                                    zoomImage(this);
-                                });
+
+                    recElement.addEventListener("click", function () {
+                        const imageElements = document.querySelectorAll(`[id^="myImage-${game.gameID}"]`);
+                        imageElements.forEach((imageElement) => {
+                            imageElement.addEventListener("click", function () {
+                                zoomImage(this);
                             });
                         });
-                        wrapper.appendChild(recElement);
-                        appendedRecCounter++;
+                    });
+                    wrapper.appendChild(recElement);
+                    appendedRecCounter++;
                 });
                 if (appendedRecCounter == 0) {
                     const noResElement = document.createElement("div");
@@ -119,40 +163,61 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     let gameID = ''
     if (window.location.pathname.includes("trainer_my_list.html")) {
-
+        if (!localStorage.getItem("user_org_name")) {
+            window.location.href = `../login/main.html`;
+        }
         const wrapper = document.querySelector(".wrapper_body");
         const url = "https://sense-eye-backend.onrender.com/api/games";
         console.log(url);
         console.log(localStorage.getItem("user_org_name"))
-
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
                 data.forEach((game) => {
+                    console.log(game)
+                    console.log(localStorage.getItem("user_org_name"))
                     const jojoElement = document.getElementById("orgNameList");
 
                     if (jojoElement) {
                         // If the element exists, set its text content to a new value
-                        jojoElement.textContent =game.orgName;
+                        jojoElement.textContent = game.orgName;
 
                     }
-                    console.log(game)
-                    console.log(localStorage.getItem("user_org_name"))
-
                     if (game.orgName == localStorage.getItem("user_org_name")) {
                         console.log(localStorage.getItem("user_org_name"))
                         const gameElement = document.createElement("div");
                         gameElement.classList.add("game");
+                        gameElement.classList.add("game");
+                        let game_mode = ""
+                        if (game.mode == 1) {
+                            game_mode = "Single Player"
+                        }
+                        if (game.mode == 2) {
+                            game_mode = "Same Team"
+                        }
+                        if (game.mode == 3) {
+                            game_mode = "Different Team"
+                        }
                         gameElement.innerHTML = `
-            <a><h2>Game Mode: ${game.mode}</h2>
-            <p>Date: ${game.timestamp}</p></a>
-          `;
-                        gameElement.addEventListener("click", function () {
-                            console.log("aaa")
-                            gameID = game.timestamp;
-                            openModal(game.timestamp);
+                        <a>
+                        <h2 id = "gameTitle">Game Mode: ${game_mode}</h2>
+                        <p  id = "gameTitle">${convertDateString(game.timestamp)}</p>
+                      </a>
+                      <div class="buttons">
+                        <a href="game_stat.html?gameID=${game.timestamp}">
+                          <img id=gameCorellIcon src="/pictures/correlation.png" alt="Go to Page 1" />
+                        </a>
+                        <a href="game_rec.html?gameID=${game.timestamp}">
+                          <img id=gameListIcon src="/pictures/vorx.png" alt="Go to Page 2" />
+                        </a>
+                      </div>
+            `;
+                        // gameElement.addEventListener("click", function () {
+                        //     console.log("aaa")
+                        //     gameID = game.timestamp;
+                        //     openModal(game.timestamp);
 
-                        });
+                        // });
                         wrapper.appendChild(gameElement);
                     }
                 });
@@ -160,6 +225,15 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch((error) => console.log(error));
     }
 });
+function goToPage1(gameID) {
+    // Redirect to page1.html with the gameID parameter
+    window.location.href = `game_rec.html?gameID=${gameID}`;
+}
+
+function goToPage2(gameID) {
+    // Redirect to page2.html with the gameID parameter
+    window.location.href = `game_stat.html?gameID=${gameID}`;
+}
 function openModal(gameID) {
     console.log(gameID);
     const url = `game_rec.html?gameID=${gameID}`;
@@ -172,6 +246,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const gameID = urlParams.get('gameID');
     var appendedRecCounter = 0
     if (window.location.pathname.includes("main.html")) {
+        console.log(localStorage.getItem("user_org_name"))
+        if (!localStorage.getItem("user_org_name")) {
+            window.location.href = `../login/main.html`;
+        }
         const BASE_URL = 'https://sense-eye-backend.onrender.com/api/rec';
         const PAGE_SIZE = 100;
         let successRecStatus = 0
@@ -189,10 +267,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (rec.orgName == localStorage.getItem("user_org_name")) {
                             if (rec.status === 1) {
                                 successRecStatus++
-                                console.log(`Rec ${rec.id} is in green`);
+                                console.log(`Rec ${rec._id} is in green`);
                             } else if (rec.status === -1) {
                                 wrongRecStatus++
-                                console.log(`Rec ${rec.id} is in red`);
+                                console.log(`Rec ${rec._id} is in red`);
                             }
                         }
                     });
@@ -210,9 +288,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
         }
 
+        var myChart = null;
 
         function createChart() {
-            var myChart = new Chart(ctx, {
+            console.log("charti")
+            console.log(successRecStatus, wrongRecStatus)
+            if (myChart) {
+                myChart.destroy();
+            }
+            myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: [`WRONG ${Math.round((wrongRecStatus / (wrongRecStatus + successRecStatus)) * 100)}%`, `GOOD ${Math.round(100 - (wrongRecStatus / (wrongRecStatus + successRecStatus)) * 100)}%`],
@@ -243,12 +327,80 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
         }
+        fetchAllRecs(1);
+        function checkDateRange(dateString, startDateString, endDateString) {
+            // Extract date parts from the dateString
+            const dateParts = dateString.split('_')[0].split('-');
+            const year = parseInt(dateParts[0]);
+            const month = parseInt(dateParts[1]) - 1; // Subtract 1 since months are zero-indexed
+            const day = parseInt(dateParts[2]);
+
+            // Extract date parts from the startDateString and endDateString
+            const startDateParts = startDateString.split('-');
+            const endDateParts = endDateString.split('-');
+
+            // Create Date objects for comparison
+            const dateToCheck = new Date(year, month, day);
+            const startDate = new Date(startDateParts[0], startDateParts[1] - 1, startDateParts[2]);
+            const endDate = new Date(endDateParts[0], endDateParts[1] - 1, endDateParts[2]);
+
+            return dateToCheck >= startDate && dateToCheck <= endDate;
+        }
 
         // Start fetching from page 1
-        fetchAllRecs(1);
+        function fetchAllRecsFilter(page) {
+            console.log("here");
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+            console.log("Start date:", startDate);
+            console.log("End date:", endDate);
+            console.log("==>" + startDate + " " + endDate)
+            fetch(`${BASE_URL}?page=${page}&page_size=${PAGE_SIZE}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    console.log(data.results)
+                    successRecStatus = 0
+                    wrongRecStatus = 0
+                    data.forEach(rec => { // Changed this line to use data.results instead of data
+                        console.log(rec)
+                        console.log(checkDateRange(rec.gameID, startDate, endDate))
+                        if (rec.orgName == localStorage.getItem("user_org_name") && checkDateRange(rec.gameID, startDate, endDate)) {
+                            console.log(checkDateRange(rec.gameID, startDate, endDate))
+                            if (rec.status === 1) {
+                                successRecStatus++
+                                console.log(`Rec ${rec._id} is in green`);
+                            } else if (rec.status === -1) {
+                                wrongRecStatus++
+                                console.log(`Rec ${rec._id} is in red`);
+                            }
+                        }
+                    });
+                    console.log(data)
+                    if (data.next) {
+                        // There are more pages, recursively fetch the next page
+                        fetchAllRecs(page + 1);
+                    } else {
+                        // All data has been fetched, create the chart
+                        createChart();
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+
+        // Add event listener to the Apply Filter button
+        const applyFilterBtn = document.getElementById('apply-filter');
+        applyFilterBtn.addEventListener('click', function () {
+            fetchAllRecsFilter(1);
+        });
 
     }
     if (window.location.pathname.includes("game_rec.html")) {
+        if (!localStorage.getItem("user_org_name")) {
+            window.location.href = `../login/main.html`;
+        }
         const wrapper = document.querySelector(".wrapper_body");
         const url = `https://sense-eye-backend.onrender.com/api/rec/${gameID}`;
         console.log(url);
@@ -258,6 +410,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     return response.json();
                 } else if (response.status === 404) {
                     const noResElement = document.createElement("div");
+                    noResElement.className = "noRecommendations";
                     noResElement.innerText = "No recommendations found";
                     wrapper.appendChild(noResElement);
                     throw new Error("No recommendations found");
@@ -271,32 +424,34 @@ document.addEventListener("DOMContentLoaded", function () {
                 data.forEach((game) => {
                     const jojoElement = document.getElementById("gameRecTitle");
                     const dateTitle = document.getElementById("gameDateRecTitle")
-                    if (jojoElement&&dateTitle) {
+                    if (jojoElement && dateTitle) {
                         // If the element exists, set its text content to a new value
-                        jojoElement.textContent =game.orgName;
-                        dateTitle.textContent = game.gameID;
+                        jojoElement.textContent = game.orgName;
+                        dateTitle.textContent = convertDateString(game.gameID);
                     }
                     console.log('---->' + game)
-                        console.log('++++++>' + gameID)
-                        const recElement = document.createElement("div");
-                        recElement.classList.add("game");
-                        recElement.innerHTML = `
-                                <a>
-                                <div class="frame"><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div>
+                    console.log('++++++>' + gameID)
+                    const recElement = document.createElement("div");
+                    recElement.classList.add("game");
+                    recElement.innerHTML = `
+                        <div class="frame"><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div>
                             `;
-                            recElement.addEventListener("click", function () {
-                                const imageElements = document.querySelectorAll(`[id^="myImage-${game.gameID}"]`);
-                                imageElements.forEach((imageElement) => {
-                                    imageElement.addEventListener("click", function () {
-                                        zoomImage(this);
-                                    });
-                                });
+
+                    recElement.addEventListener("click", function () {
+                        const imageElements = document.querySelectorAll(`[id^="myImage-${game.gameID}"]`);
+                        imageElements.forEach((imageElement) => {
+                            imageElement.addEventListener("click", function () {
+                                zoomImage(this);
                             });
-                        wrapper.appendChild(recElement);
-                        appendedRecCounter++;
-                });
+                        });
+                    });
+                    wrapper.appendChild(recElement);
+                    appendedRecCounter++;
+                }
+                );
                 if (appendedRecCounter == 0) {
                     const noResElement = document.createElement("div");
+                    noResElement.className = "noRecommendations";
                     noResElement.innerText = "No recommendations found";
                     wrapper.appendChild(noResElement);
                 }
