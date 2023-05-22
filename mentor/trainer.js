@@ -302,7 +302,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     labels: [`WRONG ${Math.round((wrongRecStatus / (wrongRecStatus + successRecStatus)) * 100)}%`, `GOOD ${Math.round(100 - (wrongRecStatus / (wrongRecStatus + successRecStatus)) * 100)}%`],
                     datasets: [{
                         label: 'Marking Number',
-                        data: [wrongRecStatus / PAGE_SIZE * 100, successRecStatus / PAGE_SIZE * 100],
+                        data: [wrongRecStatus, successRecStatus],
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.8)',
                             'rgba(75, 192, 192, 0.8)'
