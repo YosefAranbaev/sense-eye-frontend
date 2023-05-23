@@ -22,14 +22,14 @@ a {
 #logo {
     position: relative;
     width: 200px;
-    height: 100px;
+    height: 110px;
     margin-left: -20px;
     margin-top: -20px;
   }
 
 #user {
     float: right;
-    margin-top: 1%;
+    margin-top: 2%;
     margin-right: 50px;
     font-size: 2em;
     color: black;
@@ -134,6 +134,8 @@ p {
 }
 
 .breadcrumbs {
+    position: fixed;
+    z-index: 9999;
     margin-left: 15px;
     color: #4c3a3a;
 }
@@ -207,6 +209,45 @@ p {
     margin-left: 22%;
     margin-top: 2px;
 }
+#myChart{
+    margin-top: 25px;
+    align-items: center;
+
+}
+/* log out button */
+.blur-background {
+    backdrop-filter: blur(5px);
+}
+
+.logout-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 65px;
+    right: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.logout-options button {
+    background-color: #ff0000;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.game{
+    background-color: white;
+}
+.logout-options button:hover {
+    background-color: #cc0000;
+}
 @media screen and (max-width: 767px) {
      #user {
       margin-right: 15px;
@@ -236,5 +277,12 @@ p {
         align-items: center;
         flex-basis: 12%;
         text-align: center;
+    }
+}
+/* Media query for iPad */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+    #user {
+        font-size: 30px;
+        margin-top: 20px;
     }
 }

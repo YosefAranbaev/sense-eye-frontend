@@ -23,11 +23,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 return response.json();
             })
             .then(data => {
-                console.log(data);
+                console.log(data + " kkkk");
                 signUpMessageP.style.color = "blue";
                 signUpMessageP.textContent = 'Signup successful!';
-                window.location.href = '../login/main.html';
-                // Do something with the response data
+                console.log(data)
+                localStorage.setItem("user_token", data.accessToken);
+                localStorage.setItem("user_org_name", data.orgName);
+                localStorage.setItem("user_a", data.orgName);
+                localStorage.setItem("user_name", data.name);
+                localStorage.setItem("user_role", data.role);
+                // window.location.href = '../login.html';
+                if (data.role == "trainer") {
+                    window.location.href = '../mentor/main.html';
+                }
+                if (data.role == "trainee") {
+                    window.location.href = '../player_interface/main.html';
+                }
+                return data                // Do something with the response data
             })
             .catch(error => {
                 console.error(error);

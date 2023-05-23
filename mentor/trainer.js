@@ -47,9 +47,40 @@ function convertDateString(dateString) {
   
   
 document.addEventListener("DOMContentLoaded", function () {
+    function toggleLogoutOptions() {
+        var logoutOptions = document.getElementById("logout-options");
+
+        if (logoutOptions) {
+            logoutOptions.remove();
+        } else {
+            // Create the button list
+            var buttonList = document.createElement("div");
+            buttonList.id = "logout-options";
+            buttonList.classList.add("logout-options");
+
+            var logoutButton = document.createElement("button");
+            logoutButton.innerText = "Logout";
+            logoutButton.addEventListener("click", function () {
+                // Clear localStorage or perform any other logout actions
+                localStorage.clear();
+                window.location.href = `../login/main.html`;
+
+            });
+
+            buttonList.appendChild(logoutButton);
+
+            // Append the button list after the "user" link
+            var userLink = document.getElementById("user");
+            userLink.parentNode.insertBefore(buttonList, userLink.nextSibling);
+        }
+    }
+
+    // Attach the click event handler to the "user" link
+    var userLink = document.getElementById("user");
+    userLink.addEventListener("click", toggleLogoutOptions);
     let gameID = ''
     if (window.location.pathname.includes("trainer_results.html")) {
-        if(!localStorage.getItem("user_org_name")){
+        if (!localStorage.getItem("user_org_name") || (localStorage.getItem("user_role") != "trainer")) {
             window.location.href = `../login/main.html`;
         }
         const wrapper = document.querySelector(".wrapper_body");
@@ -83,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             game_mode = "Same Team"
                         }
                         if (game.mode == 3) {
-                            game_mode = "Different Team"
+                            game_mode = "Different Teams"
                         }
                         gameElement.innerHTML = `
             <a><h2>Game Mode: ${game_mode}</h2>
@@ -102,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch((error) => console.log(error));
     }
     if (window.location.pathname.includes("game_stat.html")) {
-        if(!localStorage.getItem("user_org_name")){
+        if (!localStorage.getItem("user_org_name") || (localStorage.getItem("user_role") != "trainer")) {
             window.location.href = `../login/main.html`;
         }
         const wrapper = document.querySelector(".wrapper_body");
@@ -163,7 +194,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     let gameID = ''
     if (window.location.pathname.includes("trainer_my_list.html")) {
-        if(!localStorage.getItem("user_org_name")){
+        if (!localStorage.getItem("user_org_name") || (localStorage.getItem("user_role") != "trainer")) {
             window.location.href = `../login/main.html`;
         }
         const wrapper = document.querySelector(".wrapper_body");
@@ -196,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             game_mode = "Same Team"
                         }
                         if (game.mode == 3) {
-                            game_mode = "Different Team"
+                            game_mode = "Different Teams"
                         }
                         gameElement.innerHTML = `
                         <a>
@@ -247,7 +278,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var appendedRecCounter = 0
     if (window.location.pathname.includes("main.html")) {
         console.log(localStorage.getItem("user_org_name"))
-        if(!localStorage.getItem("user_org_name")){
+        if (!localStorage.getItem("user_org_name") || (localStorage.getItem("user_role") != "trainer")) {
             window.location.href = `../login/main.html`;
         }
         const BASE_URL = 'https://sense-eye-backend.onrender.com/api/rec';
@@ -299,9 +330,9 @@ document.addEventListener("DOMContentLoaded", function () {
             myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: [`WRONG ${Math.round((wrongRecStatus / (wrongRecStatus + successRecStatus)) * 100)}%`, `GOOD ${Math.round(100 - (wrongRecStatus / (wrongRecStatus + successRecStatus)) * 100)}%`],
+                    labels: [`Inaccurate ${Math.round((wrongRecStatus / (wrongRecStatus + successRecStatus)) * 100)}%`, `Accurate ${Math.round(100 - (wrongRecStatus / (wrongRecStatus + successRecStatus)) * 100)}%`],
                     datasets: [{
-                        label: 'Marking Number',
+                        label: 'Accuracy Rate',
                         data: [wrongRecStatus, successRecStatus],
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.8)',
@@ -398,7 +429,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
     if (window.location.pathname.includes("game_rec.html")) {
-        if(!localStorage.getItem("user_org_name")){
+        if (!localStorage.getItem("user_org_name") || (localStorage.getItem("user_role") != "trainer")) {
             window.location.href = `../login/main.html`;
         }
         const wrapper = document.querySelector(".wrapper_body");
