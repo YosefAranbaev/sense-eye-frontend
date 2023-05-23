@@ -3,10 +3,17 @@ function openStat(gameID) {
     const url = `game_stat.html?gameID=${gameID}`;
     window.location.href = url;
 }
+let imageState = "original";
+
 function zoomImage(img) {
-    img.style.transform = "scale(2)"; // increase the image size by 2 times
-    img.style.transition = "transform 0.5s"; // add a smooth transition effect
-    document.addEventListener("wheel", resetImageSize); // add a listener for scrolling
+    if (imageState === "original") {
+        img.style.transform = "scale(2)"; // Increase the image size by 2 times
+        img.style.transition = "transform 0.5s"; // Add a smooth transition effect
+        imageState = "zoomed";
+    } else {
+        img.style.transform = "scale(1)"; // Reset the image size to its original size
+        imageState = "original";
+    }
 }
 function resetImageSize() {
     const images = document.querySelectorAll(".recPic");
