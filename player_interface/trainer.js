@@ -518,7 +518,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             console.log(event.target.id);
         } else if (event.target.classList.contains("buttonRed")) {
-            fetch('http://localhost:8000/api/rec/' + event.target.id, {
+            fetch('https://sense-eye-backend.onrender.com/api/rec/' + event.target.id, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
