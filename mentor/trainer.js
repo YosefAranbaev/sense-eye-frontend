@@ -26,33 +26,33 @@ function resetImageSize() {
 function convertDateString(dateString) {
     // Split the date and time components
     const [datePart, timePart] = dateString.split('_');
-    
+
     // Split the date into year, month, and day
     const [year, month, day] = datePart.split('-');
-    
+
     // Split the time into hours, minutes, and seconds
     const [hours, minutes, seconds] = timePart.split('-');
-    
+
     // Create a new Date object with the extracted components
     const date = new Date(year, month - 1, day, hours, minutes, seconds);
-    
+
     // Format the date and time as desired
     const formattedDate = date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
     });
-    
+
     const formattedTime = date.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric'
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
     });
-    
+
     return `${formattedDate} ${formattedTime}`;
-  }
-  
-  
+}
+
+
 document.addEventListener("DOMContentLoaded", function () {
     function toggleLogoutOptions() {
         var logoutOptions = document.getElementById("logout-options");
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
     userLink.addEventListener("click", toggleLogoutOptions);
     let gameID = ''
     if (window.location.pathname.includes("trainer_results.html")) {
-        if (!localStorage.getItem("user_org_name") || (localStorage.getItem("user_role") != "trainer")) {
+        if (!localStorage.getItem("user_org_name") ) {
             window.location.href = `../login/main.html`;
         }
         const wrapper = document.querySelector(".wrapper_body");
@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch((error) => console.log(error));
     }
     if (window.location.pathname.includes("game_stat.html")) {
-        if (!localStorage.getItem("user_org_name") || (localStorage.getItem("user_role") != "trainer")) {
+        if (!localStorage.getItem("user_org_name") ) {
             window.location.href = `../login/main.html`;
         }
         const wrapper = document.querySelector(".wrapper_body");
@@ -152,6 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     return response.json();
                 } else if (response.status === 404) {
                     const noResElement = document.createElement("div");
+                    noResElement.className = "noRec";
                     noResElement.innerText = "No recommendations found";
                     wrapper.appendChild(noResElement);
                     throw new Error("No recommendations found");
@@ -174,8 +175,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log('++++++>' + gameID)
                     const recElement = document.createElement("div");
                     recElement.classList.add("game");
+                    // Extract the last part of the URL after the last /
+                    let frame_url = game.frame;
+                    const filename = frame_url.substring(frame_url.lastIndexOf('/') + 1);
+
+                    // Extract the words on the left side of the underscore
+                    let result = filename.substring(0, filename.lastIndexOf('_')).replace(/_/g, ' ');
+                    result = result.charAt(0).toUpperCase() + result.slice(1);
                     recElement.innerHTML = `
-                                <div class="frame"><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div>
+                                <div class="frame">
+                                <h3 id="stat_header">${result}</h3>
+                                <img class="recPic" id="myImage-${game.gameID}" src=${game.frame}>
+                                </div>
                             `;
 
                     recElement.addEventListener("click", function () {
@@ -191,6 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
                 if (appendedRecCounter == 0) {
                     const noResElement = document.createElement("div");
+                    noResElement.className = "noRec";
                     noResElement.innerText = "No recommendations found";
                     wrapper.appendChild(noResElement);
                 }
@@ -201,7 +213,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     let gameID = ''
     if (window.location.pathname.includes("trainer_my_list.html")) {
-        if (!localStorage.getItem("user_org_name") || (localStorage.getItem("user_role") != "trainer")) {
+        if (!localStorage.getItem("user_org_name") ) {
             window.location.href = `../login/main.html`;
         }
         const wrapper = document.querySelector(".wrapper_body");
@@ -285,7 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var appendedRecCounter = 0
     if (window.location.pathname.includes("main.html")) {
         console.log(localStorage.getItem("user_org_name"))
-        if (!localStorage.getItem("user_org_name") || (localStorage.getItem("user_role") != "trainer")) {
+        if (!localStorage.getItem("user_org_name") ) {
             window.location.href = `../login/main.html`;
         }
         const BASE_URL = 'https://sense-eye-backend.onrender.com/api/rec';
@@ -436,7 +448,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
     if (window.location.pathname.includes("game_rec.html")) {
-        if (!localStorage.getItem("user_org_name") || (localStorage.getItem("user_role") != "trainer")) {
+        if (!localStorage.getItem("user_org_name")) {
             window.location.href = `../login/main.html`;
         }
         const wrapper = document.querySelector(".wrapper_body");
@@ -449,6 +461,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else if (response.status === 404) {
                     const noResElement = document.createElement("div");
                     noResElement.className = "noRecommendations";
+                    noResElement.className = "noRec";
                     noResElement.innerText = "No recommendations found";
                     wrapper.appendChild(noResElement);
                     throw new Error("No recommendations found");
@@ -472,12 +485,18 @@ document.addEventListener("DOMContentLoaded", function () {
                         console.log('++++++>' + gameID)
                         const recElement = document.createElement("div");
                         recElement.classList.add("game");
-                        recElement.innerHTML = `
+                        if (localStorage.getItem("user_role") == "trainer") {
+                            console.log(localStorage.getItem("user_role"))
+                            recElement.innerHTML = `
                         <div class="frame"><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div>
                                 <img class="buttonGreen" id=${game._id} src="/pictures/V.png">
                                 <img class="buttonRed" id=${game._id} src="/pictures/X.png">
                             `;
-
+                        }
+                        else{
+                            recElement.innerHTML = `
+                        <div class="frame"><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div>    `;
+                        }
                         recElement.addEventListener("click", function () {
                             const imageElements = document.querySelectorAll(`[id^="myImage-${game.gameID}"]`);
                             imageElements.forEach((imageElement) => {
@@ -494,6 +513,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const noResElement = document.createElement("div");
                     noResElement.className = "noRecommendations";
                     noResElement.innerText = "No recommendations found";
+                    noResElement.className = "noRec";
                     wrapper.appendChild(noResElement);
                 }
             })

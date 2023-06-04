@@ -33,12 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 localStorage.setItem("user_name", data.name);
                 localStorage.setItem("user_role", data.role);
                 // window.location.href = '../login.html';
-                if (data.role == "trainer") {
-                    window.location.href = '../mentor/main.html';
-                }
-                if (data.role == "trainee") {
-                    window.location.href = '../player_interface/main.html';
-                }
+                window.location.href = '../mentor/main.html';
                 return data                // Do something with the response data
             })
             .catch(error => {

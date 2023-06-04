@@ -13,10 +13,14 @@ a {
     color: inherit;
 }
 
+.noRec {
+    margin-left: 41%;
+}
+
 .recPic {
     width: 300px;
     height: auto;
-    margin-top: 10px;
+    margin-top: 50px;
 }
 
 #logo {
@@ -107,7 +111,9 @@ a {
 
 .wrapper_body {
     position: relative;
-    width: 500px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 1100px;
 }
 
 .static-elements {
@@ -221,11 +227,21 @@ p {
 
 }
 
+#stat_header {
+    position: absolute;
+    text-align: center;
+}
+
+.wrapper_body_main {
+    position: relative;
+    width: 500px;
+}
+
 #gameListIcon {
     position: absolute;
     height: 80px;
     width: 80px;
-    margin-left: 22%;
+    margin-left: 12%;
     margin-top: 2px;
 }
 
@@ -310,7 +326,32 @@ p {
         font-size: 30px;
         margin-top: 20px;
     }
-    .game{
+
+    .game {
         width: 450px;
+    }
+
+    .wrapper_body {
+        width: 500px;
+    }
+
+    #gameCorellIcon {
+        position: relative;
+        height: 40px;
+        width: 40px;
+        margin-left: 28%;
+        margin-top: 5%;
+
+    }
+
+    #gameListIcon {
+        position: absolute;
+        height: 80px;
+        width: 80px;
+        margin-left: 22%;
+        margin-top: 2px;
+    }
+    .noRec {
+        margin-left: 30%;
     }
 }
