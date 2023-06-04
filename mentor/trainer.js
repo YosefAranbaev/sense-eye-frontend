@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     if (jojoElement) {
                         // If the element exists, set its text content to a new value
-                        jojoElement.textContent = game.orgName;
+                        jojoElement.textContent = "Organization name: " + game.orgName;
 
                     }
                     console.log(game)
@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const dateTitle = document.getElementById("gameDateRecTitle")
                     if (jojoElement && dateTitle) {
                         // If the element exists, set its text content to a new value
-                        jojoElement.textContent = game.orgName;
+                        jojoElement.textContent = "Organization name: " + game.orgName;
                         dateTitle.textContent = convertDateString(game.gameID);
                     }
                     console.log('---->' + game)
@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     if (jojoElement) {
                         // If the element exists, set its text content to a new value
-                        jojoElement.textContent = game.orgName;
+                        jojoElement.textContent = "Organization name: " + game.orgName;
 
                     }
                     if (game.orgName == localStorage.getItem("user_org_name")) {
@@ -464,7 +464,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const dateTitle = document.getElementById("gameDateRecTitle")
                     if (jojoElement && dateTitle) {
                         // If the element exists, set its text content to a new value
-                        jojoElement.textContent = game.orgName;
+                        jojoElement.textContent = "Organization name: " + game.orgName;
                         dateTitle.textContent = convertDateString(game.gameID);
                     }
                     console.log('---->' + game)

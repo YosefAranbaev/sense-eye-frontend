@@ -25,7 +25,16 @@ a {
     height: 110px;
     margin-left: -20px;
     margin-top: -20px;
-  }
+}
+
+#title {
+    text-align: center;
+    color: #000000;
+    font-family: "Arial", sans-serif;
+    font-size: 48px;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
 
 #user {
     float: right;
@@ -34,7 +43,7 @@ a {
     font-size: 2em;
     color: black;
     text-decoration: none;
-  }
+}
 
 .frame {
     display: flex;
@@ -118,9 +127,12 @@ p {
 
 .game {
     border: 1px solid #ccc;
+    /* display: grid; */
+    place-items: center;
     padding: 10px;
     margin: 10px;
     border-radius: 5px;
+    width: 500px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
@@ -171,26 +183,30 @@ p {
     margin-top: 10px;
 }
 
-#orgNameList{
+#orgNameList {
     /* margin-left: 32%; */
     text-align: center;
 
 }
-#orgNameResult{
+
+#orgNameResult {
     /* margin-left: 32%; */
     text-align: center;
 
 }
-#gameRecTitle{
+
+#gameRecTitle {
     text-align: center;
 
 }
-#gameDateRecTitle{
+
+#gameDateRecTitle {
     /* margin-left: 22%; */
     text-align: center;
 
 }
-#gameCorellIcon{
+
+#gameCorellIcon {
     position: relative;
     height: 40px;
     width: 40px;
@@ -198,22 +214,27 @@ p {
     margin-top: 5%;
 
 }
-#gameTitle, .noRecommendations{
+
+#gameTitle,
+.noRecommendations {
     text-align: center;
 
 }
-#gameListIcon{
+
+#gameListIcon {
     position: absolute;
     height: 80px;
     width: 80px;
     margin-left: 22%;
     margin-top: 2px;
 }
-#myChart{
+
+#myChart {
     margin-top: 25px;
     align-items: center;
 
 }
+
 /* log out button */
 .blur-background {
     backdrop-filter: blur(5px);
@@ -242,19 +263,22 @@ p {
     border-radius: 4px;
     cursor: pointer;
 }
-.game{
+
+.game {
     background-color: white;
 }
+
 .logout-options button:hover {
     background-color: #cc0000;
 }
+
 @media screen and (max-width: 767px) {
-     #user {
-      margin-right: 15px;
-      margin-top: 20px;
-      font-size: 150%;
-      /* adjust the size as needed */
-     }
+    #user {
+        margin-right: 15px;
+        margin-top: 20px;
+        font-size: 150%;
+        /* adjust the size as needed */
+    }
 
 
     .breadcrumbs {
@@ -279,10 +303,14 @@ p {
         text-align: center;
     }
 }
+
 /* Media query for iPad */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
     #user {
         font-size: 30px;
         margin-top: 20px;
+    }
+    .game{
+        width: 450px;
     }
 }
