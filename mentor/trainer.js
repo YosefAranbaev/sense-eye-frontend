@@ -155,7 +155,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     noResElement.className = "noRec";
                     noResElement.innerText = "No recommendations found";
                     wrapper.appendChild(noResElement);
-                    console.log("111111111111111111111111111111111111111111111")
                     throw new Error("No recommendations found");
                 } else {
                     throw new Error(`Request failed with status ${response.status}`);
@@ -210,7 +209,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log('Error occurred while checking image validity:', error);
                   });
                 if (appendedRecCounter == 0) {
-                    console.log("OOOOOOOOOOOOOOOOOOOOOOOOOOOO")
                     const noResElement = document.createElement("div");
                     noResElement.className = "noRec";
                     noResElement.innerText = "No recommendations found";
