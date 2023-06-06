@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
     userLink.addEventListener("click", toggleLogoutOptions);
     let gameID = ''
     if (window.location.pathname.includes("trainer_results.html")) {
-        if (!localStorage.getItem("user_org_name") ) {
+        if (!localStorage.getItem("user_org_name")) {
             window.location.href = `../login/main.html`;
         }
         const wrapper = document.querySelector(".wrapper_body");
@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch((error) => console.log(error));
     }
     if (window.location.pathname.includes("game_stat.html")) {
-        if (!localStorage.getItem("user_org_name") ) {
+        if (!localStorage.getItem("user_org_name")) {
             window.location.href = `../login/main.html`;
         }
         const wrapper = document.querySelector(".wrapper_body");
@@ -155,6 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     noResElement.className = "noRec";
                     noResElement.innerText = "No recommendations found";
                     wrapper.appendChild(noResElement);
+                    console.log("111111111111111111111111111111111111111111111")
                     throw new Error("No recommendations found");
                 } else {
                     throw new Error(`Request failed with status ${response.status}`);
@@ -164,43 +165,52 @@ document.addEventListener("DOMContentLoaded", function () {
                 appendedRecCounter = 0
                 console.log(data)
                 data.forEach((game) => {
-                    const jojoElement = document.getElementById("gameRecTitle");
-                    const dateTitle = document.getElementById("gameDateRecTitle")
-                    if (jojoElement && dateTitle) {
-                        // If the element exists, set its text content to a new value
-                        jojoElement.textContent = "Organization name: " + game.orgName;
-                        dateTitle.textContent = convertDateString(game.gameID);
-                    }
-                    console.log('---->' + game)
-                    console.log('++++++>' + gameID)
-                    const recElement = document.createElement("div");
-                    recElement.classList.add("game");
-                    // Extract the last part of the URL after the last /
-                    let frame_url = game.frame;
-                    const filename = frame_url.substring(frame_url.lastIndexOf('/') + 1);
+                    fetch(game.frame)
+                        .then(response => {
+                            if (response.ok) {
+                                const jojoElement = document.getElementById("gameRecTitle");
+                                const dateTitle = document.getElementById("gameDateRecTitle")
+                                if (jojoElement && dateTitle) {
+                                    // If the element exists, set its text content to a new value
+                                    jojoElement.textContent = "Organization name: " + game.orgName;
+                                    dateTitle.textContent = convertDateString(game.gameID);
+                                }
+                                console.log('---->' + game)
+                                console.log('++++++>' + gameID)
+                                const recElement = document.createElement("div");
+                                recElement.classList.add("game");
+                                // Extract the last part of the URL after the last /
+                                let frame_url = game.frame;
+                                const filename = frame_url.substring(frame_url.lastIndexOf('/') + 1);
 
-                    // Extract the words on the left side of the underscore
-                    let result = filename.substring(0, filename.lastIndexOf('_')).replace(/_/g, ' ');
-                    result = result.charAt(0).toUpperCase() + result.slice(1);
-                    recElement.innerHTML = `
+                                // Extract the words on the left side of the underscore
+                                let result = filename.substring(0, filename.lastIndexOf('_')).replace(/_/g, ' ');
+                                result = result.charAt(0).toUpperCase() + result.slice(1);
+                                recElement.innerHTML = `
                                 <div class="frame">
                                 <h3 id="stat_header">${result}</h3>
                                 <img class="recPic" id="myImage-${game.gameID}" src=${game.frame}>
                                 </div>
                             `;
 
-                    recElement.addEventListener("click", function () {
-                        const imageElements = document.querySelectorAll(`[id^="myImage-${game.gameID}"]`);
-                        imageElements.forEach((imageElement) => {
-                            imageElement.addEventListener("click", function () {
-                                zoomImage(this);
-                            });
+                                recElement.addEventListener("click", function () {
+                                    const imageElements = document.querySelectorAll(`[id^="myImage-${game.gameID}"]`);
+                                    imageElements.forEach((imageElement) => {
+                                        imageElement.addEventListener("click", function () {
+                                            zoomImage(this);
+                                        });
+                                    });
+                                });
+                                wrapper.appendChild(recElement);
+                                appendedRecCounter++;
+                            }
                         });
-                    });
-                    wrapper.appendChild(recElement);
-                    appendedRecCounter++;
-                });
+                })
+                .catch(error => {
+                    console.log('Error occurred while checking image validity:', error);
+                  });
                 if (appendedRecCounter == 0) {
+                    console.log("OOOOOOOOOOOOOOOOOOOOOOOOOOOO")
                     const noResElement = document.createElement("div");
                     noResElement.className = "noRec";
                     noResElement.innerText = "No recommendations found";
@@ -213,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     let gameID = ''
     if (window.location.pathname.includes("trainer_my_list.html")) {
-        if (!localStorage.getItem("user_org_name") ) {
+        if (!localStorage.getItem("user_org_name")) {
             window.location.href = `../login/main.html`;
         }
         const wrapper = document.querySelector(".wrapper_body");
@@ -297,7 +307,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var appendedRecCounter = 0
     if (window.location.pathname.includes("main.html")) {
         console.log(localStorage.getItem("user_org_name"))
-        if (!localStorage.getItem("user_org_name") ) {
+        if (!localStorage.getItem("user_org_name")) {
             window.location.href = `../login/main.html`;
         }
         const BASE_URL = 'https://sense-eye-backend.onrender.com/api/rec';
@@ -493,7 +503,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <img class="buttonRed" id=${game._id} src="/pictures/X.png">
                             `;
                         }
-                        else{
+                        else {
                             recElement.innerHTML = `
                         <div class="frame"><img class="recPic" id="myImage-${game.gameID}" src=${game.frame}></div>    `;
                         }
