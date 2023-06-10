@@ -144,6 +144,8 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = `../login/main.html`;
         }
         const wrapper = document.querySelector(".wrapper_body");
+        const params = new URLSearchParams(window.location.search);
+        gameID = params.get("gameID");
         const url = `https://sense-eye-backend.onrender.com/api/statistics/${gameID}`;
         console.log(url);
         fetch(url)
@@ -178,12 +180,12 @@ document.addEventListener("DOMContentLoaded", function () {
                                 console.log('++++++>' + gameID)
                                 const recElement = document.createElement("div");
                                 recElement.classList.add("game");
-                                // Extract the last part of the URL after the last /
-                                let frame_url = game.frame;
-                                const filename = frame_url.substring(frame_url.lastIndexOf('/') + 1);
+                                const nameParam = new URLSearchParams(new URL(game.frame).search);
+                                result = nameParam.get("name");
+                                result = result.replace(/_/g, ' ');
+                                result = result.replace('.png', " ")
 
-                                // Extract the words on the left side of the underscore
-                                let result = filename.substring(0, filename.lastIndexOf('_')).replace(/_/g, ' ');
+                                // Capitalize the first letter
                                 result = result.charAt(0).toUpperCase() + result.slice(1);
                                 recElement.innerHTML = `
                                 <div class="frame">
@@ -205,9 +207,9 @@ document.addEventListener("DOMContentLoaded", function () {
                             }
                         });
                 })
-                .catch(error => {
-                    console.log('Error occurred while checking image validity:', error);
-                  });
+                    .catch(error => {
+                        console.log('Error occurred while checking image validity:', error);
+                    });
                 if (appendedRecCounter == 0) {
                     const noResElement = document.createElement("div");
                     noResElement.className = "noRec";
