@@ -21,6 +21,7 @@ a {
     width: 300px;
     height: auto;
     margin-top: 50px;
+    z-index: 1;
 }
 
 #logo {
@@ -95,7 +96,7 @@ a {
     top: 0;
     width: 100%;
     height: 150px;
-    z-index: 1;
+    z-index: 9999;
     overflow: hidden;
     background-color: #f4f4f4;
 }

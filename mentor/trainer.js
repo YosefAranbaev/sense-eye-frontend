@@ -233,7 +233,9 @@ document.addEventListener("DOMContentLoaded", function () {
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
-                data.forEach((game) => {
+
+                for (let i = data.length - 1; i >= 0; i--) {
+                    const game = data[i];                    
                     console.log(game)
                     console.log(localStorage.getItem("user_org_name"))
                     const jojoElement = document.getElementById("orgNameList");
@@ -280,10 +282,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         // });
                         wrapper.appendChild(gameElement);
                     }
-                });
+                };
             })
             .catch((error) => console.log(error));
     }
+
 });
 function goToPage1(gameID) {
     // Redirect to page1.html with the gameID parameter
