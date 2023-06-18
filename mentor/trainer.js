@@ -316,7 +316,7 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = `../login/main.html`;
         }
         const BASE_URL = 'https://sense-eye-backend.onrender.com/api/rec';
-        const PAGE_SIZE = 150;
+        const PAGE_SIZE = 1500;
         let successRecStatus = 0
         let wrongRecStatus = 0
 
