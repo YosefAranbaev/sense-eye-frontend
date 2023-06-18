@@ -165,7 +165,6 @@ document.addEventListener("DOMContentLoaded", function () {
             .then((data) => {
                 appendedRecCounter = 0
                 console.log(data)
-                console.log("Hi")
                 if (data.length != 0) {
                     data.forEach((game) => {
                         fetch(game.frame)
