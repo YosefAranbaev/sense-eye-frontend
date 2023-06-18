@@ -155,9 +155,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else if (response.status === 404) {
                     const noResElement = document.createElement("div");
                     noResElement.className = "noRec";
-                    noResElement.innerText = "No recommendations found";
+                    noResElement.innerText = "No Statistics found";
                     wrapper.appendChild(noResElement);
-                    throw new Error("No recommendations found");
+                    throw new Error("No Statistics found");
                 } else {
                     throw new Error(`Request failed with status ${response.status}`);
                 }
@@ -165,55 +165,58 @@ document.addEventListener("DOMContentLoaded", function () {
             .then((data) => {
                 appendedRecCounter = 0
                 console.log(data)
-                data.forEach((game) => {
-                    fetch(game.frame)
-                        .then(response => {
-                            if (response.ok) {
-                                const jojoElement = document.getElementById("gameRecTitle");
-                                const dateTitle = document.getElementById("gameDateRecTitle")
-                                if (jojoElement && dateTitle) {
-                                    // If the element exists, set its text content to a new value
-                                    jojoElement.textContent = "Organization name: " + game.orgName;
-                                    dateTitle.textContent = convertDateString(game.gameID);
-                                }
-                                console.log('---->' + game)
-                                console.log('++++++>' + gameID)
-                                const recElement = document.createElement("div");
-                                recElement.classList.add("game");
-                                const nameParam = new URLSearchParams(new URL(game.frame).search);
-                                result = nameParam.get("name");
-                                result = result.replace(/_/g, ' ');
-                                result = result.replace('.png', " ")
+                console.log("Hi")
+                if (data.length != 0) {
+                    data.forEach((game) => {
+                        fetch(game.frame)
+                            .then(response => {
+                                if (response.ok) {
+                                    const jojoElement = document.getElementById("gameRecTitle");
+                                    const dateTitle = document.getElementById("gameDateRecTitle")
+                                    if (jojoElement && dateTitle) {
+                                        // If the element exists, set its text content to a new value
+                                        jojoElement.textContent = "Organization name: " + game.orgName;
+                                        dateTitle.textContent = convertDateString(game.gameID);
+                                    }
+                                    console.log('---->' + game)
+                                    console.log('++++++>' + gameID)
+                                    const recElement = document.createElement("div");
+                                    recElement.classList.add("game");
+                                    const nameParam = new URLSearchParams(new URL(game.frame).search);
+                                    result = nameParam.get("name");
+                                    result = result.replace(/_/g, ' ');
+                                    result = result.replace('.png', " ")
 
-                                // Capitalize the first letter
-                                result = result.charAt(0).toUpperCase() + result.slice(1);
-                                recElement.innerHTML = `
+                                    // Capitalize the first letter
+                                    result = result.charAt(0).toUpperCase() + result.slice(1);
+                                    recElement.innerHTML = `
                                 <div class="frame">
                                 <h3 id="stat_header">${result}</h3>
                                 <img class="recPic" id="myImage-${game.gameID}" src=${game.frame}>
                                 </div>
                             `;
 
-                                recElement.addEventListener("click", function () {
-                                    const imageElements = document.querySelectorAll(`[id^="myImage-${game.gameID}"]`);
-                                    imageElements.forEach((imageElement) => {
-                                        imageElement.addEventListener("click", function () {
-                                            zoomImage(this);
+                                    recElement.addEventListener("click", function () {
+                                        const imageElements = document.querySelectorAll(`[id^="myImage-${game.gameID}"]`);
+                                        imageElements.forEach((imageElement) => {
+                                            imageElement.addEventListener("click", function () {
+                                                zoomImage(this);
+                                            });
                                         });
                                     });
-                                });
-                                wrapper.appendChild(recElement);
-                                appendedRecCounter++;
-                            }
+                                    wrapper.appendChild(recElement);
+                                    appendedRecCounter++;
+                                }
+                            });
+                    })
+                        .catch(error => {
+                            console.log('Error occurred while checking image validity:', error);
                         });
-                })
-                    .catch(error => {
-                        console.log('Error occurred while checking image validity:', error);
-                    });
+                }
                 if (appendedRecCounter == 0) {
                     const noResElement = document.createElement("div");
                     noResElement.className = "noRec";
-                    noResElement.innerText = "No recommendations found";
+                    noResElement.innerText = "No Statistics found";
                     wrapper.appendChild(noResElement);
                 }
             })
@@ -235,7 +238,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then((data) => {
 
                 for (let i = data.length - 1; i >= 0; i--) {
-                    const game = data[i];                    
+                    const game = data[i];
                     console.log(game)
                     console.log(localStorage.getItem("user_org_name"))
                     const jojoElement = document.getElementById("orgNameList");
