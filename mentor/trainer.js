@@ -276,12 +276,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         </a>
                       </div>
             `;
-                        // gameElement.addEventListener("click", function () {
-                        //     console.log("aaa")
-                        //     gameID = game.timestamp;
-                        //     openModal(game.timestamp);
-
-                        // });
                         wrapper.appendChild(gameElement);
                     }
                 };

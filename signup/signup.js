@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 localStorage.setItem("user_a", data.orgName);
                 localStorage.setItem("user_name", data.name);
                 localStorage.setItem("user_role", data.role);
-                // window.location.href = '../login.html';
                 window.location.href = '../mentor/main.html';
                 return data                // Do something with the response data
             })
